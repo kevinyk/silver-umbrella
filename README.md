@@ -7,62 +7,70 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 This is an angular application with two components, Notes and NoteNew. Both components load a service NoteService. 
 
 1. When the NotesComponent is created, it subscribes to the data property of the the NoteService and passes it a callback that says: “If this._noteService.data ever updates, update this.notes to be the updated value”
-`#notes.component.ts line 12-17
+```javascript
+#notes.component.ts line 12-17
 ngOnInit(){
   	this._noteService.data.subscribe((data:any)=>{
   		console.log(data);
   		this.notes = data;
   	})
-}`
+}```
 2. The form is submitted, triggering the submitNote function on the component.
-`#note-new.component.html lines 4-8
+```javascript
+#note-new.component.html lines 4-8
 <form (submit)="submitNote()">
 		<p>Content: <input type="text" name="content" [(ngModel)]="newNote.content"></p>
 		<p>Description: <input type="text" name="description" [(ngModel)]="newNote.description"></p>
 		<input type="submit" name="">
-</form>`
+</form>```
 3. The submitNote function calls the service’s postNote function, passing in the value of the new note to it.
-`#note-new.component.ts line 16-19
+```javascript
+#note-new.component.ts line 16-19
 submitNote(){
   	console.log('submitted a note', this.newNote);
   	this._noteService.postNote(this.newNote);
-}`
+}```
 4. The service makes a request to the API, passing the new note along with the POST request. It subscribes to the returned observable and passes in a callback saying: “If I get a response from the API, trigger my getAllNotes function.
-`#note.service.ts lines 20-26
+```javascript
+#note.service.ts lines 20-26
 postNote(note){
   	console.log("in the service's postNote method");
   	console.log(note);
   	this._http.post('https://5a690b2778f25e00122ad215.mockapi.io/notes', note).subscribe(()=>{
   		this.getAllNotes();
 	})
-}`
+}```
 5. The API sends a response, triggers getAllNotes and subscribes to it with a callback that says “If I get a response from the API, call updateData on the returned information”
-`#note.service.ts lines 27-33
+```javascript
+#note.service.ts lines 27-33
 getAllNotes(){
   	this._http.get('https://5a690b2778f25e00122ad215.mockapi.io/notes').subscribe((responseData:any)=>{
   		console.log('got all notes', responseData);
   		// this.data.next(responseData);
   		this.updateData(responseData);
 	})
-}`
+}```
 
 6. The API sends a response containing all of the notes, triggering updateData
-`#note.service.ts line 31
-this.updateData(responseData);`
+```javascript
+#note.service.ts line 31
+this.updateData(responseData);```
 7. updateData replaces the internal array of notes with the returned results from the API, triggering the subscription on 1.
-`#note.service.ts lines 14-19
+```javascript
+#note.service.ts lines 14-19
 updateData(newData:any):void{
 	this.data.next(newData);
-}`
+}```
 (note: steps six and seven can be combined as a part of the getAllNotes definition, like this)
-`#note.service.ts lines 27-33
+```javascript
+#note.service.ts lines 27-33
 getAllNotes(){
   	this._http.get('https://5a690b2778f25e00122ad215.mockapi.io/notes').subscribe((responseData:any)=>{
   		console.log('got all notes', responseData);
   		// this.data.next(responseData);
   		this.data.next(responseData);
 	})
-}`
+}```
 
 ## Development server
 
