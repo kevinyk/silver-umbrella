@@ -1,0 +1,8 @@
+<fieldset>
+	<legend>NotesComponent</legend>
+	<h2>List of all notes:</h2>
+	<fieldset *ngFor="let note of notes">
+		<h2>{{note.content}}</h2>
+		<p>{{note.description}}</p>
+	</fieldset>
+</fieldset>
