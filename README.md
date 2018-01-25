@@ -14,7 +14,8 @@ ngOnInit(){
   		console.log(data);
   		this.notes = data;
   	})
-}```
+}
+```
 2. The form is submitted, triggering the submitNote function on the component.
 ```javascript
 #note-new.component.html lines 4-8
@@ -22,14 +23,16 @@ ngOnInit(){
 		<p>Content: <input type="text" name="content" [(ngModel)]="newNote.content"></p>
 		<p>Description: <input type="text" name="description" [(ngModel)]="newNote.description"></p>
 		<input type="submit" name="">
-</form>```
+</form>
+```
 3. The submitNote function calls the service’s postNote function, passing in the value of the new note to it.
 ```javascript
 #note-new.component.ts line 16-19
 submitNote(){
   	console.log('submitted a note', this.newNote);
   	this._noteService.postNote(this.newNote);
-}```
+}
+```
 4. The service makes a request to the API, passing the new note along with the POST request. It subscribes to the returned observable and passes in a callback saying: “If I get a response from the API, trigger my getAllNotes function.
 ```javascript
 #note.service.ts lines 20-26
@@ -39,7 +42,8 @@ postNote(note){
   	this._http.post('https://5a690b2778f25e00122ad215.mockapi.io/notes', note).subscribe(()=>{
   		this.getAllNotes();
 	})
-}```
+}
+```
 5. The API sends a response, triggers getAllNotes and subscribes to it with a callback that says “If I get a response from the API, call updateData on the returned information”
 ```javascript
 #note.service.ts lines 27-33
@@ -49,18 +53,21 @@ getAllNotes(){
   		// this.data.next(responseData);
   		this.updateData(responseData);
 	})
-}```
+}
+```
 
 6. The API sends a response containing all of the notes, triggering updateData
 ```javascript
 #note.service.ts line 31
-this.updateData(responseData);```
+this.updateData(responseData);
+```
 7. updateData replaces the internal array of notes with the returned results from the API, triggering the subscription on 1.
 ```javascript
 #note.service.ts lines 14-19
 updateData(newData:any):void{
 	this.data.next(newData);
-}```
+}
+```
 (note: steps six and seven can be combined as a part of the getAllNotes definition, like this)
 ```javascript
 #note.service.ts lines 27-33
@@ -70,7 +77,8 @@ getAllNotes(){
   		// this.data.next(responseData);
   		this.data.next(responseData);
 	})
-}```
+}
+```
 
 ## Development server
 
