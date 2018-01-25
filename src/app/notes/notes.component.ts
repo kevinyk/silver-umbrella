@@ -13,8 +13,6 @@ export class NotesComponent implements OnInit {
   	this._noteService.data.subscribe((data:any)=>{
   		console.log(data);
   		this.notes = data;
-  		
   	})
   }
-
 }
